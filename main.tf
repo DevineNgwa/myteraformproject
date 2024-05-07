@@ -182,20 +182,19 @@ resource "aws_autoscaling_group" "my_asg" {
 
 # Target Group
 resource "aws_lb_target_group" "ALBTG" {
-  name        = "ALBTG"
-  target_type = "alb"
-  port        = 80
-  protocol    = "TCP"
-  vpc_id      = aws_vpc.myVPC.id
+  name     = "ALBTG"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.myVPC.id
 }
 
 resource "aws_lb" "web_alb" {
-  name                       = "Devineapp-lb-tf"
-  internal                   = false
-  load_balancer_type         = "application"
-  security_groups            = [aws_security_group.ALBSG.id]
-  subnets                    = [aws_subnet.public_subnet1.id, aws_subnet.public_subnet2.id]
-  enable_deletion_protection = false
+  name               = "Devineapp-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.ALBSG.id]
+  subnets            = [aws_subnet.public_subnet1.id, aws_subnet.public_subnet2.id]
+
 
   tags = {
     Environment = "lab"
@@ -272,4 +271,5 @@ resource "aws_db_instance" "my_db_instance" {
   password               = "mypassword"
   db_subnet_group_name   = aws_db_subnet_group.db_subnet_group.name
   vpc_security_group_ids = [aws_security_group.RDSSG.id]
+  skip_final_snapshot    = true
 }
